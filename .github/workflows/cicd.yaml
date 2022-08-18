@@ -35,7 +35,7 @@ jobs:
           aws-region: ap-northeast-1
 
       - name: upload lambda.zip to s3
-        run: aws s3 cp main.zip s3://lambda-rds-proxy-rds
+        run: aws s3 cp lambda.zip s3://lambda-rds-proxy-rds
 
   deploy:
     needs: build
