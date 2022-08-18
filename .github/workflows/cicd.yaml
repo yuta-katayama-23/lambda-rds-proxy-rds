@@ -1,0 +1,55 @@
+name: lambda-build-deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: wget AmazonRootCA1.pem
+        run: |
+          wget https://www.amazontrust.com/repository/AmazonRootCA1.pem
+
+      - name: build
+        run: |
+          yarn install
+          yarn build
+
+      - name: create lambda.zip
+        run: |
+          rm -rf node_modules
+          yarn install --production
+          zip lambda.zip -r .
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: upload lambda.zip to s3
+        run: aws s3 cp main.zip s3://lambda-rds-proxy-rds
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: update Lambda function
+        run: |
+          aws lambda update-function-code --function-name rds-proxy-lambda-func --s3-bucket lambda-rds-proxy-rds --s3-key lambda.zip
+          | jq '.FunctionName, .LastUpdateStatus'
