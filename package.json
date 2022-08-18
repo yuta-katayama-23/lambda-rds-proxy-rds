@@ -1,0 +1,47 @@
+{
+	"name": "rds-proxy-lambda",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "yuta-katayama-23",
+	"license": "MIT",
+	"dependencies": {
+		"mysql2": "^2.3.3"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.18.10",
+		"@babel/preset-env": "^7.18.10",
+		"@commitlint/cli": "^17.0.3",
+		"@commitlint/config-conventional": "^17.0.3",
+		"babel-loader": "^8.2.5",
+		"eslint": "^8.22.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-jest": "^26.8.3",
+		"eslint-webpack-plugin": "^3.2.0",
+		"jest": "^28.1.3",
+		"license-checker": "^25.0.1",
+		"lint-staged": "^13.0.3",
+		"prettier": "^2.7.1",
+		"simple-git-hooks": "^2.8.0",
+		"webpack": "^5.74.0",
+		"webpack-cli": "^4.10.0",
+		"webpack-node-externals": "^3.0.0"
+	},
+	"scripts": {
+		"dev": "webpack watch --node-env=development",
+		"build": "webpack --node-env=production",
+		"debug": "webpack --node-env=development",
+		"lint": "eslint src/",
+		"test": "jest",
+		"prepare": "npx simple-git-hooks"
+	},
+	"lint-staged": {
+		"*": "npx prettier --ignore-unknown --write",
+		"yarn.lock": "npx license-checker --production --failOn \"GPL;AGPL;LGPL;NGPL\" --summary"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "npx lint-staged --verbose",
+		"commit-msg": "npx commitlint -e"
+	}
+}
