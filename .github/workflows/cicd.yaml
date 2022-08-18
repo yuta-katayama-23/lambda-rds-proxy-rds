@@ -51,5 +51,5 @@ jobs:
 
       - name: update Lambda function
         run: |
-          aws lambda update-function-code --function-name rds-proxy-lambda-func --s3-bucket lambda-rds-proxy-rds --s3-key lambda.zip
+          aws lambda update-function-code --function-name rds-proxy-lambda-func --s3-bucket lambda-rds-proxy-rds --s3-key lambda.zip 
           | jq '.FunctionName, .LastUpdateStatus'
