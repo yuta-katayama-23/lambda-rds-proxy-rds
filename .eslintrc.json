@@ -4,7 +4,6 @@
 	"parserOptions": { "ecmaVersion": 13 },
 	"extends": [
 		"eslint:recommended",
-		"plugin:import/recommended",
 		"airbnb-base",
 		"plugin:jest/recommended",
 		"prettier"

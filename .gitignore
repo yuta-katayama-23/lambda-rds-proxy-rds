@@ -137,5 +137,8 @@ dist
 # Docker
 data
 
-# frontend
-static
+# zip
+*.zip
+
+# Lambda
+AmazonRootCA1.pem
